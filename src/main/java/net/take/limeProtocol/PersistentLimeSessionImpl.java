@@ -1,13 +1,36 @@
 package net.take.limeProtocol;
 
 import org.limeprotocol.Command;
+import org.limeprotocol.Identity;
 import org.limeprotocol.Message;
 import org.limeprotocol.Notification;
 import org.limeprotocol.client.ClientChannel;
+import org.limeprotocol.security.Authentication;
 
+import java.net.URI;
 import java.util.concurrent.Future;
 
 public class PersistentLimeSessionImpl implements PersistentLimeSession {
+
+    private final URI endPoint;
+    private final Identity identity;
+    private final Authentication authentication;
+    private final long sendTimeout;
+    private final ClientChannelFactory clientChannelFactory;
+    private final LimeSessionProvider limeSessionProvider;
+
+    protected PersistentLimeSessionImpl(URI endPoint, Identity identity, Authentication authentication, long sendTimeout,
+                                        ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider)
+    {
+        this.endPoint = endPoint;
+        this.identity = identity;
+        this.authentication = authentication;
+        this.sendTimeout = sendTimeout;
+        this.clientChannelFactory = clientChannelFactory;
+        this.limeSessionProvider = limeSessionProvider;
+    }
+
+
     public Future StartAsync() {
         return null;
     }
