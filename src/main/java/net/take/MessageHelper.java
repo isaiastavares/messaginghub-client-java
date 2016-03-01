@@ -4,7 +4,7 @@ import org.limeprotocol.Message;
 import org.limeprotocol.Notification;
 import org.limeprotocol.Reason;
 
-public class MessageExtensions {
+public class MessageHelper {
 
     public static Notification toReceivedNotification(Message message) {
         return toNotification(message, Notification.Event.RECEIVED);

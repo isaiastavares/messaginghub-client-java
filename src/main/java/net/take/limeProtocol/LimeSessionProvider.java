@@ -8,9 +8,9 @@ import java.net.URI;
 import java.util.concurrent.Future;
 
 public interface LimeSessionProvider {
-    Future EstablishSessionAsync(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication);
+    void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication);
 
-    Future FinishSessionAsync(ClientChannel clientChannel);
+    void finishSession(ClientChannel clientChannel);
 
     boolean IsSessionEstablished(ClientChannel clientChannel);
 }

@@ -9,5 +9,5 @@ import java.util.concurrent.Future;
  */
 public abstract class AbstractNotificationReceiver extends AbstractEnvelopeReceiver implements NotificationReceiver {
 
-    public abstract Future ReceiveAsync(Notification notification);
+    public abstract void receive(Notification notification);
 }

@@ -1,8 +1,10 @@
 package net.take;
 
 import net.take.receivers.MessageReceiver;
+import net.take.receivers.NotificationReceiver;
 import org.limeprotocol.Identity;
 import org.limeprotocol.MediaType;
+import org.limeprotocol.Notification;
 import org.limeprotocol.security.Authentication;
 import org.limeprotocol.security.KeyAuthentication;
 import org.limeprotocol.security.PlainAuthentication;
@@ -26,17 +28,17 @@ public class MessagingHubClientBuilder {
     private Identity identity;
     private URI endPoint;
 
-    private MessagingHubClient messagingHubClient;
+    private MessagingHubClientInterface messagingHubClientInterface;
 
-    protected MessagingHubClient getMessagingHubClient() {
-        return messagingHubClient;
+    protected MessagingHubClientInterface getMessagingHubClientInterface() {
+        return messagingHubClientInterface;
     }
 
     public MessagingHubClientBuilder() throws URISyntaxException {
         hostName = DEFAULT_DOMAIN;
         domain = DEFAULT_DOMAIN;
         sendTimeout = 20;
-        //_senderBuilder = new MessagingHubSenderBuilder(this);
+        _senderBuilder = new MessagingHubSenderBuilder(this);
 
         identity = Identity.parse(login + "@" + domain);
         endPoint = new URI("net.tcp://" + hostName + ":55321");
@@ -86,28 +88,28 @@ public class MessagingHubClientBuilder {
         return _senderBuilder;
     }
 
-    public MessagingHubSenderBuilder addMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
-        _senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
-        return _senderBuilder;
-    }
+    //public MessagingHubSenderBuilder addMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
+    //    _senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
+    //    return _senderBuilder;
+    //}
 
-    public MessagingHubSenderBuilder addNotificationReceiver(INotificationReceiver notificationReceiver, Event?forEventType=null) {
+    public MessagingHubSenderBuilder addNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
         _senderBuilder.AddNotificationReceiver(notificationReceiver, forEventType);
         return _senderBuilder;
     }
 
-    public MessagingHubSenderBuilder addNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
-        _senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
-        return _senderBuilder;
-    }
+    //public MessagingHubSenderBuilder addNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
+    //    _senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
+    //    return _senderBuilder;
+    //}
 
-    public MessagingHubClient build() {
-        messagingHubClient = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, senderBuilder.EnvelopeRegistrar);
-        return messagingHubClient;
+    public MessagingHubClientInterface build() {
+        messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, _senderBuilder.getEnvelopeRegistrar());
+        return messagingHubClientInterface;
     }
 
     protected MessagingHubSenderBuilder getMessagingSenderBuilder() {
-        return senderBuilder;
+        return _senderBuilder;
     }
 
     private Authentication GetAuthenticationScheme() {

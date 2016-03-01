@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 public class BlackholeNotificationReceiver extends AbstractNotificationReceiver {
 
     @Override
-    public Future ReceiveAsync(Notification notification) {
-        return null;
+    public void receive(Notification notification) {
     }
 }

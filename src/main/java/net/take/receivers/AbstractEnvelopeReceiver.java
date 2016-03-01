@@ -2,7 +2,7 @@ package net.take.receivers;
 
 /***
  * Base envelope receiver
- * Obs.: Senders are automatically injected by MessagingHubClient
+ * Obs.: Senders are automatically injected by MessagingHubClientInterface
  */
 public abstract class AbstractEnvelopeReceiver {
 

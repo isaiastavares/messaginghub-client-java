@@ -8,12 +8,11 @@ import java.net.URI;
 import java.util.concurrent.Future;
 
 public class LimeSessionProviderImpl implements  LimeSessionProvider {
-    public Future EstablishSessionAsync(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication) {
-        return null;
+    public void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication) {
     }
 
-    public Future FinishSessionAsync(ClientChannel clientChannel) {
-        return null;
+    public void finishSession(ClientChannel clientChannel) {
+
     }
 
     public boolean IsSessionEstablished(ClientChannel clientChannel) {

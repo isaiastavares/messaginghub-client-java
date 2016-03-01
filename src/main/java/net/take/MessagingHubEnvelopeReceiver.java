@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 
 public interface MessagingHubEnvelopeReceiver {
 
-    Future<Message> ReceiveMessageAsync();
+    Message receiveMessage();
 
-    Future<Notification> ReceiveNotificationAsync();
+    Notification receiveNotification();
 }

@@ -15,5 +15,5 @@ public interface EnvelopeReceiver<T extends Envelope> {
      * @param envelopeType
      * @return Future
      */
-    Future ReceiveAsync(T envelopeType);
+    void receive(T envelopeType);
 }

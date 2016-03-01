@@ -7,9 +7,9 @@ import java.net.URI;
 import java.util.concurrent.Future;
 
 public class PersistentLimeSessionFactoryImpl implements PersistentLimeSessionFactory {
-    public Future<PersistentLimeSession> CreatePersistentClientChannelAsync(URI endpoint, long sendTimeout, Identity identity, Authentication authentication, ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider) {
+    public PersistentLimeSession createPersistentClientChannel(URI endpoint, long sendTimeout, Identity identity, Authentication authentication, ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider, PersistentLimeSessionImpl.PersistentLimeSessionListener listener) {
 
-        PersistentLimeSession persistentClientChannel = new PersistentLimeSessionImpl(endpoint, identity, authentication, sendTimeout, clientChannelFactory, limeSessionProvider);
+        PersistentLimeSession persistentClientChannel = new PersistentLimeSessionImpl(endpoint, identity, authentication, sendTimeout, clientChannelFactory, limeSessionProvider, listener);
 
         //return Future<PersistentLimeSession>(persistentClientChannel);
         return null;

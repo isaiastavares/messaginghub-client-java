@@ -10,7 +10,7 @@ public class MessagingHubSenderBuilder {
     private final MessagingHubClientBuilder clientBuilder;
 
     protected EnvelopeSender getEnvelopeSender() {
-        return clientBuilder.getMessagingHubClient();
+        return clientBuilder.getMessagingHubClientInterface();
     }
 
     private EnvelopeListenerRegistrar envelopeRegistrar;

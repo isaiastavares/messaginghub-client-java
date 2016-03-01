@@ -111,7 +111,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     private synchronized void establishSession() {
         clientChannel = null;
 
-        clientChannel = clientChannelFactory.CreateClientChannelAsync(0);
+        clientChannel = clientChannelFactory.createClientChannel(0);
 
         limeSessionProvider.EstablishSessionAsync(clientChannel, endPoint, identity, authentication);
 

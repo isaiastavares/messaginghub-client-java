@@ -15,14 +15,14 @@ public interface PersistentLimeSession {
 
     ClientChannel getClientChannel();
 
-    Future<Message> ReceiveMessageAsync();
-    Future SendMessageAsync(Message message);
+    Message receiveMessage();
+    void sendMessage(Message message);
 
-    Future<Command> ReceiveCommandAsync();
-    Future SendCommandAsync(Command command);
+    Command receiveCommand();
+    void sendCommand(Command command);
 
-    Future<Notification> ReceiveNotificationAsync();
-    Future SendNotificationAsync(Notification notification);
+    Notification receiveNotification();
+    void SendNotification(Notification notification);
 
     //Future SetResourceAsync<TResource extends Document>(LimeUri uri, TResource resource, CancellationToken cancellationToken, Func<Command, Task> unrelatedCommandHandler = null);
 
