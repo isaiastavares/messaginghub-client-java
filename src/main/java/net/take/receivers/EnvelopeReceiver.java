@@ -13,7 +13,6 @@ public interface EnvelopeReceiver<T extends Envelope> {
     /***
      * Handle received envelopes
      * @param envelopeType
-     * @return Future
      */
     void receive(T envelopeType);
 }

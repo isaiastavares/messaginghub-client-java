@@ -2,5 +2,9 @@ package net.take;
 
 import net.take.receivers.EnvelopeSender;
 
-public interface MessagingHubSender extends EnvelopeSender{
+public interface MessagingHubSender extends EnvelopeSender {
+
+    void start();
+
+    void stop();
 }
