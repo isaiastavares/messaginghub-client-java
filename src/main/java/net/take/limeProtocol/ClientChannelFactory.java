@@ -5,5 +5,5 @@ import org.limeprotocol.client.ClientChannel;
 import java.util.concurrent.Future;
 
 public interface ClientChannelFactory {
-    ClientChannel createClientChannel(long sendTimeout);
+    ClientChannel createClientChannel();
 }

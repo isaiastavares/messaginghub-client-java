@@ -73,4 +73,14 @@ public class MessagingHubClient implements MessagingHubClientInterface {
     public Notification receiveNotification() {
         return null;
     }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }

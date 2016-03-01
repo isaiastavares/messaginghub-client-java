@@ -117,7 +117,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     private synchronized void establishSession() {
         clientChannel = null;
 
-        clientChannel = clientChannelFactory.createClientChannel(0);
+        clientChannel = clientChannelFactory.createClientChannel();
 
         limeSessionProvider.establishSession(clientChannel, endPoint, identity, authentication);
 
