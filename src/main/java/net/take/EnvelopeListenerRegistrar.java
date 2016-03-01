@@ -14,74 +14,83 @@ import java.util.function.Supplier;
 
 public class EnvelopeListenerRegistrar implements EnvelopeListener {
 
-    private final Collection<ReceiverFactoryPredicate<Message>> _messageReceivers;
-    private final Collection<ReceiverFactoryPredicate<Notification>> _notificationReceivers;
+    private final Collection<ReceiverFactoryPredicate<Message>> messageReceivers;
+    private final Collection<ReceiverFactoryPredicate<Notification>> notificationReceivers;
 
-    private static final MessageReceiver[] DefaultMessageReceivers = new MessageReceiver[] { new UnsupportedMessageReceiver() };
-    private static final NotificationReceiver[] DefaultNotificationReceivers = new NotificationReceiver[] { new BlackholeNotificationReceiver() };
+    private static final Collection<MessageReceiver> DefaultMessageReceivers = new ArrayList<>();
+    private static final Collection<NotificationReceiver> DefaultNotificationReceivers = new ArrayList<>();
 
-    public EnvelopeListenerRegistrar()
-    {
-        _messageReceivers = new ArrayList<ReceiverFactoryPredicate<Message>>();
-        _notificationReceivers = new ArrayList<ReceiverFactoryPredicate<Notification>>();
+    public EnvelopeListenerRegistrar() {
+        messageReceivers = new ArrayList<ReceiverFactoryPredicate<Message>>();
+        notificationReceivers = new ArrayList<ReceiverFactoryPredicate<Notification>>();
+
+        DefaultMessageReceivers.add(new UnsupportedMessageReceiver());
+        DefaultNotificationReceivers.add(new BlackholeNotificationReceiver());
     }
 
 
     public void addMessageReceiver(Supplier<MessageReceiver> receiverFactory, Predicate<Message> predicate) {
-        //addEnvelopeReceiver(_messageReceivers, receiverFactory, predicate);
-    }
 
-    public void addNotificationReceiver(Supplier<NotificationReceiver> receiverFactory, Predicate<Notification> predicate) {
-        //addEnvelopeReceiver(_notificationReceivers, receiverFactory, predicate);
-    }
-
-    public Collection<EnvelopeReceiver<Envelope>> getReceiversFor(Type envelope)
-    {
-        if (envelope == null) throw new IllegalArgumentException("envelope");
-
-        if (envelope instanceof Message)
-        {
-            //return (Collection<EnvelopeReceiver<Envelope>>) getReceiversFor(_messageReceivers, (Message) envelope).Coalesce(DefaultMessageReceivers);
-        }
-
-        if (envelope instanceof Notification)
-        {
-            //return (Collection<EnvelopeReceiver<Envelope>>) getReceiversFor(_notificationReceivers, (Notification) envelope).Coalesce(DefaultNotificationReceivers);
-        }
-
-        return new ArrayList<EnvelopeReceiver<Envelope>>();
-    }
-
-    private void addEnvelopeReceiver(Collection<ReceiverFactoryPredicate<Envelope>> envelopeReceivers,
-    Supplier<EnvelopeReceiver> receiverFactory, Predicate predicate)
-    {
+        //TODO: Try extract all addReceivers to a unique method
         if (receiverFactory == null) throw new IllegalArgumentException("receiverFactory");
         if (predicate == null) throw new IllegalArgumentException("predicate");
 
-        ReceiverFactoryPredicate predicateReceiverFactory = new ReceiverFactoryPredicate(receiverFactory, predicate);
-        envelopeReceivers.add(predicateReceiverFactory);
+        //Java gambis (Workaround)
+        Supplier<EnvelopeReceiver<Message>> enveloperFactoryWrapper = receiverFactory::get;
+
+        messageReceivers.add(new ReceiverFactoryPredicate<Message>(enveloperFactoryWrapper, predicate));
     }
 
-    Collection<EnvelopeReceiver<Envelope>> getReceiversFor(Collection<ReceiverFactoryPredicate<Envelope>> envelopeReceivers, Envelope envelope){
+    public void addNotificationReceiver(Supplier<NotificationReceiver> receiverFactory, Predicate<Notification> predicate) {
+        //TODO: Try extract all addReceivers to a unique method
+        if (receiverFactory == null) throw new IllegalArgumentException("receiverFactory");
+        if (predicate == null) throw new IllegalArgumentException("predicate");
+
+        //Java gambis (Workaround)
+        Supplier<EnvelopeReceiver<Notification>> enveloperFactoryWrapper = receiverFactory::get;
+
+        notificationReceivers.add(new ReceiverFactoryPredicate<Notification>(enveloperFactoryWrapper, predicate));
+    }
+
+    //TODO: Try extract all getReceiversFor to a unique method
+    public Collection<EnvelopeReceiver<Message>> getMessageReceivers() {
+        List<EnvelopeReceiver<Message>> resultList = new ArrayList<EnvelopeReceiver<Message>>();
+
+        for (ReceiverFactoryPredicate<Message> rFP : messageReceivers) {
+            resultList.add(rFP.getReceiverFactory().get());
+        }
+        return EnumerableHelper.Coalesce(resultList, DefaultMessageReceivers);
+    }
+
+    //TODO: Try extract all getReceiversFor to a unique method
+    public Collection<EnvelopeReceiver<Notification>> getNotificationReceivers() {
+        List<EnvelopeReceiver<Notification>> resultList = new ArrayList<EnvelopeReceiver<Notification>>();
+
+        for (ReceiverFactoryPredicate<Notification> rFP : notificationReceivers) {
+            resultList.add(rFP.getReceiverFactory().get());
+        }
+        return EnumerableHelper.Coalesce(resultList, DefaultNotificationReceivers);
+    }
+
+    //TODO: Try use something like this
+    private Collection<EnvelopeReceiver<Envelope>> getReceiversFor(Collection<ReceiverFactoryPredicate<Envelope>> envelopeReceivers, Envelope envelope) {
 
         List<EnvelopeReceiver<Envelope>> resultList = new ArrayList<EnvelopeReceiver<Envelope>>();
 
-        for (ReceiverFactoryPredicate<Envelope> rFP : envelopeReceivers ){
+        for (ReceiverFactoryPredicate<Envelope> rFP : envelopeReceivers) {
 
-            if(rFP.getPredicate().test(envelope)){
+            if (rFP.getPredicate().test(envelope)) {
                 resultList.add(rFP.getReceiverFactory().get());
             }
         }
         return resultList;
     }
 
-    class ReceiverFactoryPredicate<T extends Envelope>
-    {
+    class ReceiverFactoryPredicate<T extends Envelope> {
         private final Predicate<T> predicate;
         private final Supplier<EnvelopeReceiver<T>> receiverFactory;
 
-        ReceiverFactoryPredicate(Supplier<EnvelopeReceiver<T>> receiverFactory, Predicate<T> predicate)
-        {
+        ReceiverFactoryPredicate(Supplier<EnvelopeReceiver<T>> receiverFactory, Predicate<T> predicate) {
             if (receiverFactory == null) throw new IllegalArgumentException("receiverFactory");
             if (predicate == null) throw new IllegalArgumentException("predicate");
 
@@ -89,8 +98,12 @@ public class EnvelopeListenerRegistrar implements EnvelopeListener {
             this.predicate = predicate;
         }
 
-        public Supplier<EnvelopeReceiver<T>> getReceiverFactory() { return receiverFactory; }
+        public Supplier<EnvelopeReceiver<T>> getReceiverFactory() {
+            return receiverFactory;
+        }
 
-        public Predicate<T> getPredicate() { return predicate; }
+        public Predicate<T> getPredicate() {
+            return predicate;
+        }
     }
 }

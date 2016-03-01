@@ -11,7 +11,6 @@ public class PersistentLimeSessionFactoryImpl implements PersistentLimeSessionFa
 
         PersistentLimeSession persistentClientChannel = new PersistentLimeSessionImpl(endpoint, identity, authentication, sendTimeout, clientChannelFactory, limeSessionProvider, listener);
 
-        //return Future<PersistentLimeSession>(persistentClientChannel);
-        return null;
+        return persistentClientChannel;
     }
 }
