@@ -11,31 +11,31 @@ import java.net.URI;
 
 public class MessagingHubClient implements MessagingHubClientInterface {
 
-    private final Identity _identity;
-    private final Authentication _authentication;
-    private final URI _endpoint;
-    private final PersistentLimeSessionFactory _persistentClientFactory;
-    private final ClientChannelFactory _clientChannelFactory;
-    private final LimeSessionProvider _limeSessionProvider;
+    private final Identity identity;
+    private final Authentication authentication;
+    private final URI endpoint;
+    private final PersistentLimeSessionFactory persistentClientFactory;
+    private final ClientChannelFactory clientChannelFactory;
+    private final LimeSessionProvider limeSessionProvider;
 
-    private final long _sendTimeout;
-    private final EnvelopeListenerRegistrar _listenerRegistrar;
+    private final long sendTimeout;
+    private final EnvelopeListenerRegistrar listenerRegistrar;
 
-    private PersistentLimeSession _persistentLimeSession;
+    private PersistentLimeSession persistentLimeSession;
     //private ChannelListener _channelListener;
 
     protected MessagingHubClient(Identity identity, Authentication authentication, URI endPoint, long sendTimeout,
                                  PersistentLimeSessionFactory persistentChannelFactory, ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider,
                                  EnvelopeListenerRegistrar listenerRegistrar)
     {
-        _identity = identity;
-        _authentication = authentication;
-        _endpoint = endPoint;
-        _persistentClientFactory = persistentChannelFactory;
-        _clientChannelFactory = clientChannelFactory;
-        _limeSessionProvider = limeSessionProvider;
-        _sendTimeout = sendTimeout;
-        _listenerRegistrar = listenerRegistrar;
+        this.identity = identity;
+        this.authentication = authentication;
+        endpoint = endPoint;
+        persistentClientFactory = persistentChannelFactory;
+        this.clientChannelFactory = clientChannelFactory;
+        this.limeSessionProvider = limeSessionProvider;
+        this.sendTimeout = sendTimeout;
+        this.listenerRegistrar = listenerRegistrar;
     }
 
     protected MessagingHubClient(Identity identity, Authentication authentication, URI endPoint, long sendTimeout, EnvelopeListenerRegistrar listenerRegistrar)

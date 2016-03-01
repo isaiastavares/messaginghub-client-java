@@ -16,7 +16,7 @@ public class MessagingHubClientBuilder {
 
     public static final String DEFAULT_DOMAIN = "msging.net";
 
-    private final MessagingHubSenderBuilder _senderBuilder;
+    private final MessagingHubSenderBuilder senderBuilder;
 
     private String login;
     private String password;
@@ -38,7 +38,7 @@ public class MessagingHubClientBuilder {
         hostName = DEFAULT_DOMAIN;
         domain = DEFAULT_DOMAIN;
         sendTimeout = 20;
-        _senderBuilder = new MessagingHubSenderBuilder(this);
+        senderBuilder = new MessagingHubSenderBuilder(this);
 
         identity = Identity.parse(login + "@" + domain);
         endPoint = new URI("net.tcp://" + hostName + ":55321");
@@ -84,32 +84,32 @@ public class MessagingHubClientBuilder {
     }
 
     public MessagingHubSenderBuilder addMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
-        _senderBuilder.addMessageReceiver(messageReceiver, forMimeType);
-        return _senderBuilder;
+        senderBuilder.addMessageReceiver(messageReceiver, forMimeType);
+        return senderBuilder;
     }
 
     //public MessagingHubSenderBuilder addMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
-    //    _senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
-    //    return _senderBuilder;
+    //    senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
+    //    return senderBuilder;
     //}
 
     public MessagingHubSenderBuilder addNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
-        _senderBuilder.addNotificationReceiver(notificationReceiver, forEventType);
-        return _senderBuilder;
+        senderBuilder.addNotificationReceiver(notificationReceiver, forEventType);
+        return senderBuilder;
     }
 
     //public MessagingHubSenderBuilder addNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
-    //    _senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
-    //    return _senderBuilder;
+    //    senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
+    //    return senderBuilder;
     //}
 
     public MessagingHubClientInterface build() {
-        messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, _senderBuilder.getEnvelopeRegistrar());
+        messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, senderBuilder.getEnvelopeRegistrar());
         return messagingHubClientInterface;
     }
 
     protected MessagingHubSenderBuilder getMessagingSenderBuilder() {
-        return _senderBuilder;
+        return senderBuilder;
     }
 
     private Authentication GetAuthenticationScheme() {
