@@ -2,7 +2,7 @@ package net.take;
 
 import java.util.Collection;
 
-public class EnumerableHelper
+public class CollectionHelper
 {
     public static Collection Coalesce(Collection collection, Collection alternative)
     {

@@ -5,7 +5,6 @@ import org.limeprotocol.Envelope;
 import org.limeprotocol.Message;
 import org.limeprotocol.Notification;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +58,7 @@ public class EnvelopeListenerRegistrar implements EnvelopeListener {
         for (ReceiverFactoryPredicate<Message> rFP : messageReceivers) {
             resultList.add(rFP.getReceiverFactory().get());
         }
-        return EnumerableHelper.Coalesce(resultList, DefaultMessageReceivers);
+        return CollectionHelper.Coalesce(resultList, DefaultMessageReceivers);
     }
 
     //TODO: Try extract all getReceiversFor to a unique method
@@ -69,7 +68,7 @@ public class EnvelopeListenerRegistrar implements EnvelopeListener {
         for (ReceiverFactoryPredicate<Notification> rFP : notificationReceivers) {
             resultList.add(rFP.getReceiverFactory().get());
         }
-        return EnumerableHelper.Coalesce(resultList, DefaultNotificationReceivers);
+        return CollectionHelper.Coalesce(resultList, DefaultNotificationReceivers);
     }
 
     //TODO: Try use something like this
