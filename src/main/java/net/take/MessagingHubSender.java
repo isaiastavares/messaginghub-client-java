@@ -1,4 +1,6 @@
 package net.take;
 
-public interface MessagingHubSender {
+import net.take.receivers.EnvelopeSender;
+
+public interface MessagingHubSender extends EnvelopeSender{
 }

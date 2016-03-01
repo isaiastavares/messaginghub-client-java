@@ -7,9 +7,9 @@ import java.util.concurrent.Future;
 
 public interface PersistentLimeSession {
 
-    Future StartAsync();
+    void start() throws Exception;
 
-    Future StopAsync();
+    void stop();
 
     //Event EventHandler SessionEstablished;
 

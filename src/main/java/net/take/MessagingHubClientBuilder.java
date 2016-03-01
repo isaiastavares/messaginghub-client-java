@@ -16,118 +16,112 @@ public class MessagingHubClientBuilder {
 
     private final MessagingHubSenderBuilder _senderBuilder;
 
-    private String _login;
-    private String _password;
-    private String _accessKey;
-    private long _sendTimeout;
-    private String _domain;
-    private String _hostName;
+    private String login;
+    private String password;
+    private String accessKey;
+    private long sendTimeout;
+    private String domain;
+    private String hostName;
 
-    private Identity _identity;
-    private URI _endPoint;
+    private Identity identity;
+    private URI endPoint;
 
-    private MessagingHubClient MessagingHubClient;
+    private MessagingHubClient messagingHubClient;
 
     protected MessagingHubClient getMessagingHubClient() {
-        return MessagingHubClient;
-    }
-
-    private void setMessagingHubClient(MessagingHubClient messagingHubClient) {
-        MessagingHubClient = messagingHubClient;
+        return messagingHubClient;
     }
 
     public MessagingHubClientBuilder() throws URISyntaxException {
-        _hostName = DEFAULT_DOMAIN;
-        _domain = DEFAULT_DOMAIN;
-        _sendTimeout = 20;
+        hostName = DEFAULT_DOMAIN;
+        domain = DEFAULT_DOMAIN;
+        sendTimeout = 20;
         //_senderBuilder = new MessagingHubSenderBuilder(this);
 
-        _identity = Identity.parse(_login + "@" + _domain);
-        _endPoint = new URI("net.tcp://" + _hostName + ":55321");
+        identity = Identity.parse(login + "@" + domain);
+        endPoint = new URI("net.tcp://" + hostName + ":55321");
     }
 
-    public MessagingHubClientBuilder UsingAccount(String login, String password) {
+    public MessagingHubClientBuilder usingAccount(String login, String password) {
         if (login == null || login.isEmpty()) throw new IllegalArgumentException("login");
         if (password == null || password.isEmpty()) throw new IllegalArgumentException("password");
 
-        _login = login;
-        _password = password;
+        this.login = login;
+        this.password = password;
 
         return this;
     }
 
-    public MessagingHubClientBuilder UsingAccessKey(String login, String accessKey) {
+    public MessagingHubClientBuilder usingAccessKey(String login, String accessKey) {
         if (login == null || login.isEmpty()) throw new IllegalArgumentException("login");
         if (accessKey == null || login.isEmpty()) throw new IllegalArgumentException("accessKey");
 
-        _login = login;
-        _accessKey = accessKey;
+        this.login = login;
+        this.accessKey = accessKey;
 
         return this;
     }
 
-    public MessagingHubClientBuilder UsingHostName(String hostName) {
+    public MessagingHubClientBuilder usingHostName(String hostName) {
         if (hostName == null || hostName.isEmpty()) throw new IllegalArgumentException("hostName");
 
-        _hostName = hostName;
+        this.hostName = hostName;
         return this;
     }
 
-    public MessagingHubClientBuilder UsingDomain(String domain) {
+    public MessagingHubClientBuilder usingDomain(String domain) {
         if (domain == null || domain.isEmpty()) throw new IllegalArgumentException("domain");
 
-        _domain = domain;
+        this.domain = domain;
         return this;
     }
 
-    public MessagingHubClientBuilder WithSendTimeout(long timeout) {
-        _sendTimeout = timeout;
+    public MessagingHubClientBuilder withSendTimeout(long timeout) {
+        sendTimeout = timeout;
         return this;
     }
 
-    public MessagingHubSenderBuilder AddMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
+    public MessagingHubSenderBuilder addMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
         _senderBuilder.AddMessageReceiver(messageReceiver, forMimeType);
         return _senderBuilder;
     }
 
-    public MessagingHubSenderBuilder AddMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
+    public MessagingHubSenderBuilder addMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
         _senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
         return _senderBuilder;
     }
 
-    public MessagingHubSenderBuilder AddNotificationReceiver(INotificationReceiver notificationReceiver, Event?forEventType=null) {
+    public MessagingHubSenderBuilder addNotificationReceiver(INotificationReceiver notificationReceiver, Event?forEventType=null) {
         _senderBuilder.AddNotificationReceiver(notificationReceiver, forEventType);
         return _senderBuilder;
     }
 
-    public MessagingHubSenderBuilder AddNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
+    public MessagingHubSenderBuilder addNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
         _senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
         return _senderBuilder;
     }
 
-    public IMessagingHubClient Build() {
-        MessagingHubClient = new MessagingHubClient(_identity, GetAuthenticationScheme(), _endPoint, _sendTimeout, _senderBuilder.EnvelopeRegistrar);
-        return MessagingHubClient;
+    public MessagingHubClient build() {
+        messagingHubClient = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, senderBuilder.EnvelopeRegistrar);
+        return messagingHubClient;
     }
 
-    private MessagingHubSenderBuilder AsMessagingSenderBuilder;
-
-    protected MessagingHubSenderBuilder getAsMessagingSenderBuilder() {
-        return AsMessagingSenderBuilder;
+    protected MessagingHubSenderBuilder getMessagingSenderBuilder() {
+        return senderBuilder;
     }
 
     private Authentication GetAuthenticationScheme() {
         Authentication result = null;
 
-        if (_password != null) {
+        if (password != null) {
             PlainAuthentication plainAuthentication = new PlainAuthentication();
-            plainAuthentication.setToBase64Password(_password);
+            plainAuthentication.setToBase64Password(password);
             result = plainAuthentication;
         }
 
-        if (_accessKey != null) {
+        if (accessKey != null) {
             KeyAuthentication keyAuthentication = new KeyAuthentication();
-            keyAuthentication.setKey(_accessKey);
+            keyAuthentication.setKey(accessKey);
             result = keyAuthentication;
         }
 
