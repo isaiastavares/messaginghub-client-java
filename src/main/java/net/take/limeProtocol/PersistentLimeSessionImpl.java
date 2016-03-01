@@ -72,7 +72,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
     private void endSession()
     {
-        limeSessionProvider.FinishSessionAsync(clientChannel);
+        limeSessionProvider.finishSession(clientChannel);
         clientChannel = null;
     }
 
@@ -80,28 +80,34 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
         return null;
     }
 
-    public Future<Message> ReceiveMessageAsync() {
+    @Override
+    public Message receiveMessage() {
         return null;
     }
 
-    public Future SendMessageAsync(Message message) {
+    @Override
+    public void sendMessage(Message message) {
+
+    }
+
+    @Override
+    public Command receiveCommand() {
         return null;
     }
 
-    public Future<Command> ReceiveCommandAsync() {
+    @Override
+    public void sendCommand(Command command) {
+
+    }
+
+    @Override
+    public Notification receiveNotification() {
         return null;
     }
 
-    public Future SendCommandAsync(Command command) {
-        return null;
-    }
+    @Override
+    public void SendNotification(Notification notification) {
 
-    public Future<Notification> ReceiveNotificationAsync() {
-        return null;
-    }
-
-    public Future SendNotificationAsync(Notification notification) {
-        return null;
     }
 
     private boolean isSessionEstablished() {
@@ -113,7 +119,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
         clientChannel = clientChannelFactory.createClientChannel(0);
 
-        limeSessionProvider.EstablishSessionAsync(clientChannel, endPoint, identity, authentication);
+        limeSessionProvider.establishSession(clientChannel, endPoint, identity, authentication);
 
         if (isSessionEstablished() && listener != null) {
             listener.sessionEstablished(true);

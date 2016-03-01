@@ -6,43 +6,46 @@ import net.take.receivers.NotificationReceiver;
 import org.limeprotocol.MediaType;
 import org.limeprotocol.Notification;
 
+import java.util.function.Supplier;
+
 public class MessagingHubSenderBuilder {
+
     private final MessagingHubClientBuilder clientBuilder;
+    private final EnvelopeListenerRegistrar envelopeRegistrar;
+
+    public MessagingHubSenderBuilder(MessagingHubClientBuilder clientBuilder) {
+        this.clientBuilder = clientBuilder;
+        this.envelopeRegistrar = new EnvelopeListenerRegistrar();
+    }
+
+    public MessagingHubSenderBuilder addMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
+        EnvelopeListenerHelper.addMessageReceiver(getEnvelopeRegistrar(), messageReceiver, forMimeType);
+        return this;
+    }
+
+    public MessagingHubSenderBuilder addMessageReceiver(Supplier<MessageReceiver> receiverFactory, MediaType forMimeType) {
+        EnvelopeListenerHelper.addMessageReceiver(getEnvelopeRegistrar(), receiverFactory, forMimeType);
+        return this;
+    }
+
+    public MessagingHubSenderBuilder addNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
+        EnvelopeListenerHelper.addNotificationReceiver(getEnvelopeRegistrar(), notificationReceiver, forEventType);
+        return this;
+    }
+
+    public MessagingHubSenderBuilder addNotificationReceiver(Supplier<NotificationReceiver> receiverFactory, Notification.Event forEventType) {
+        EnvelopeListenerHelper.addNotificationReceiver(getEnvelopeRegistrar(), receiverFactory, forEventType);
+        return this;
+    }
 
     protected EnvelopeSender getEnvelopeSender() {
         return clientBuilder.getMessagingHubClientInterface();
     }
 
-    private EnvelopeListenerRegistrar envelopeRegistrar;
-
     protected EnvelopeListenerRegistrar getEnvelopeRegistrar() {
         return envelopeRegistrar;
     }
 
-    public MessagingHubSenderBuilder(MessagingHubClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
-        EnvelopeRegistrar = new EnvelopeListenerRegistrar();
-    }
-
-    public MessagingHubSenderBuilder AddMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
-        EnvelopeRegistrar.AddMessageReceiver(messageReceiver, forMimeType);
-        return this;
-    }
-
-    public MessagingHubSenderBuilder AddMessageReceiver(Func<MessageReceiver> receiverFactory, MediaType forMimeType) {
-        EnvelopeRegistrar.AddMessageReceiver(receiverFactory, forMimeType);
-        return this;
-    }
-
-    public MessagingHubSenderBuilder AddNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
-        EnvelopeRegistrar.AddNotificationReceiver(notificationReceiver, forEventType);
-        return this;
-    }
-
-    public MessagingHubSenderBuilder AddNotificationReceiver(Func<NotificationReceiver> receiverFactory, Notification.Event forEventType) {
-        EnvelopeRegistrar.AddNotificationReceiver(receiverFactory, forEventType);
-        return this;
-    }
 
     public MessagingHubSender build() {
         return clientBuilder.build();

@@ -22,7 +22,7 @@ public class MessagingHubClient implements MessagingHubClientInterface {
     private final EnvelopeListenerRegistrar _listenerRegistrar;
 
     private PersistentLimeSession _persistentLimeSession;
-    private ChannelListener _channelListener;
+    //private ChannelListener _channelListener;
 
     protected MessagingHubClient(Identity identity, Authentication authentication, URI endPoint, long sendTimeout,
                                  PersistentLimeSessionFactory persistentChannelFactory, ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider,
@@ -40,18 +40,17 @@ public class MessagingHubClient implements MessagingHubClientInterface {
 
     protected MessagingHubClient(Identity identity, Authentication authentication, URI endPoint, long sendTimeout, EnvelopeListenerRegistrar listenerRegistrar)
     {
-        super(identity, authentication, endPoint, sendTimeout);
-        _listenerRegistrar = listenerRegistrar;
+        this(identity, authentication, endPoint, sendTimeout);
     }
 
     public MessagingHubClient(Identity identity, Authentication authentication, URI endPoint)
     {
-        super(identity, authentication, endPoint, 20);
+        this(identity, authentication, endPoint, 20);
     }
 
     public MessagingHubClient(Identity identity, Authentication authentication, URI endPoint, long sendTimeout)
     {
-        super(identity, authentication, endPoint, sendTimeout, new PersistentLimeSessionFactoryImpl(), new ClientChannelFactoryImpl(),
+        this(identity, authentication, endPoint, sendTimeout, new PersistentLimeSessionFactoryImpl(), new ClientChannelFactoryImpl(),
                 new LimeSessionProviderImpl(), new EnvelopeListenerRegistrar());
     }
 

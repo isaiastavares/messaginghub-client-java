@@ -1,7 +1,14 @@
 # Messaging Hub Client Java
 
+### Warning: this work is in progress and yet don't work
+
 MessagingHub.Client is a simple client for the [Messaging Hub](https://messaginghub.io/)
 that uses a fluent interface to send and receive messages, commands and notifications.
+
+## Contributions
+
+To help this work get some task on [Trello](https://trello.com/b/lp28VxvS/messaging-hub-client-java)
+
 
 ## Getting Started
 

@@ -84,7 +84,7 @@ public class MessagingHubClientBuilder {
     }
 
     public MessagingHubSenderBuilder addMessageReceiver(MessageReceiver messageReceiver, MediaType forMimeType) {
-        _senderBuilder.AddMessageReceiver(messageReceiver, forMimeType);
+        _senderBuilder.addMessageReceiver(messageReceiver, forMimeType);
         return _senderBuilder;
     }
 
@@ -94,7 +94,7 @@ public class MessagingHubClientBuilder {
     //}
 
     public MessagingHubSenderBuilder addNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
-        _senderBuilder.AddNotificationReceiver(notificationReceiver, forEventType);
+        _senderBuilder.addNotificationReceiver(notificationReceiver, forEventType);
         return _senderBuilder;
     }
 
