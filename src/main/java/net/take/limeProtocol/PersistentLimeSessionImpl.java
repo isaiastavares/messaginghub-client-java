@@ -1,14 +1,12 @@
 package net.take.limeProtocol;
 
-import org.limeprotocol.Command;
-import org.limeprotocol.Identity;
-import org.limeprotocol.Message;
-import org.limeprotocol.Notification;
+import org.limeprotocol.*;
 import org.limeprotocol.client.ClientChannel;
 import org.limeprotocol.security.Authentication;
 
 import java.net.URI;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
@@ -106,7 +104,12 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     }
 
     @Override
-    public void SendNotification(Notification notification) {
+    public void sendNotification(Notification notification) {
+
+    }
+
+    @Override
+    public void setResource(LimeUri uri, Document resource, Function<Command, Void> unrelatedCommandHandler) {
 
     }
 
