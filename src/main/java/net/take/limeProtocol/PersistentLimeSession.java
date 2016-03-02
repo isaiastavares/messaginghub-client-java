@@ -16,13 +16,13 @@ public interface PersistentLimeSession {
     ClientChannel getClientChannel();
 
     Message receiveMessage();
-    void sendMessage(Message message);
+    void sendMessage(Message message) throws IOException;
 
     Command receiveCommand();
-    void sendCommand(Command command);
+    void sendCommand(Command command) throws IOException;
 
     Notification receiveNotification();
-    void sendNotification(Notification notification);
+    void sendNotification(Notification notification) throws IOException;
 
-    void setResource(LimeUri uri, Document resource, Function<Command, Void> unrelatedCommandHandler);
+    void setResource(LimeUri uri, Document resource, Function<Command, Void> unrelatedCommandHandler) throws IOException;
 }

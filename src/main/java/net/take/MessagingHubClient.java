@@ -61,14 +61,14 @@ public class MessagingHubClient implements MessagingHubClientInterface, Persiste
             persistentLimeSession.getClientChannel().sendCommand(command);
     }
 
-    public void sendMessage(Message message) throws IllegalStateException {
+    public void sendMessage(Message message) throws IllegalStateException, IOException {
         if (!isStarted())
             throw new IllegalStateException("Client must be started before to proceed with this operation");
 
         persistentLimeSession.sendMessage(message);
     }
 
-    public void sendNotification(Notification notification) throws IllegalStateException {
+    public void sendNotification(Notification notification) throws IllegalStateException, IOException {
         if (!isStarted())
             throw new IllegalStateException("Client must be started before to proceed with this operation!");
 
@@ -115,7 +115,7 @@ public class MessagingHubClient implements MessagingHubClientInterface, Persiste
     }
 
     @Override
-    public void sessionEstablished(boolean isEstablished) {
+    public void sessionEstablished(boolean isEstablished) throws IOException {
         setPresence();
     }
 
@@ -134,8 +134,7 @@ public class MessagingHubClient implements MessagingHubClientInterface, Persiste
     }
 
 
-    private void setPresence()
-    {
+    private void setPresence() throws IOException {
         Presence p = new Presence();
         p.setStatus(Presence.PresenceStatus.AVAILABLE);
         p.setRoutingRule(Presence.RoutingRule.IDENTITY);

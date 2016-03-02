@@ -82,8 +82,14 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     }
 
     @Override
-    public void sendMessage(Message message) {
+    public void sendMessage(Message message) throws IOException {
 
+        if (!isSessionEstablished())
+        {
+            //***start thread waitToEstablishSession().ConfigureAwait(false);
+        }
+
+        clientChannel.sendMessage(message);
     }
 
     @Override
@@ -92,8 +98,14 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     }
 
     @Override
-    public void sendCommand(Command command) {
+    public void sendCommand(Command command) throws IOException {
 
+        if (!isSessionEstablished())
+        {
+            //***start thread waitToEstablishSession().ConfigureAwait(false);
+        }
+
+        clientChannel.sendCommand(command);
     }
 
     @Override
@@ -102,13 +114,24 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     }
 
     @Override
-    public void sendNotification(Notification notification) {
+    public void sendNotification(Notification notification) throws IOException {
 
+        if (!isSessionEstablished())
+        {
+            //***start thread waitToEstablishSession().ConfigureAwait(false);
+        }
+
+        clientChannel.sendNotification(notification);
     }
 
     @Override
-    public void setResource(LimeUri uri, Document resource, Function<Command, Void> unrelatedCommandHandler) {
+    public void setResource(LimeUri uri, Document resource, Function<Command, Void> unrelatedCommandHandler) throws IOException {
 
+        Command c = new Command();
+        c.setResource(resource);
+        c.setUri(uri);
+
+        sendCommand(c);
     }
 
     private boolean isSessionEstablished() {
@@ -120,18 +143,14 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
         clientChannel = clientChannelFactory.createClientChannel();
 
-        limeSessionProvider.establishSession(clientChannel, endPoint, identity, authentication);
-
-        if (isSessionEstablished() && listener != null) {
-            listener.sessionEstablished(true);
-        }
+        limeSessionProvider.establishSession(clientChannel, endPoint, identity, authentication, listener);
     }
 
     /***
      * Listener for PersistentLimeSession
      */
     public interface PersistentLimeSessionListener {
-        void sessionEstablished(boolean isEstablished);
+        void sessionEstablished(boolean isEstablished) throws IOException;
     }
 
     class WatchSession implements Runnable {

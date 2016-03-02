@@ -20,12 +20,12 @@ public interface EnvelopeSender {
      * Send a message through the Messaging Hub
      * @param message Message to be sent
      */
-    void sendMessage(Message message) throws OperationNotSupportedException;
+    void sendMessage(Message message) throws OperationNotSupportedException, IOException;
 
     /***
      * Send a notification through the Messaging Hub
      * @param notification Notification to be sent
      */
-    void sendNotification(Notification notification) throws OperationNotSupportedException;
+    void sendNotification(Notification notification) throws OperationNotSupportedException, IOException;
 
 }

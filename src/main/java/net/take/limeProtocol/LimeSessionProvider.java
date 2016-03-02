@@ -9,7 +9,7 @@ import java.net.URI;
 import java.util.concurrent.Future;
 
 public interface LimeSessionProvider {
-    void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication) throws Exception;
+    void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication, PersistentLimeSessionImpl.PersistentLimeSessionListener listener) throws Exception;
 
     void finishSession(ClientChannel clientChannel) throws IOException;
 

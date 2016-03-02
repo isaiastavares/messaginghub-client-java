@@ -6,6 +6,7 @@ import org.limeprotocol.Reason;
 import org.limeprotocol.ReasonCodes;
 
 import javax.naming.OperationNotSupportedException;
+import java.io.IOException;
 import java.util.concurrent.Future;
 
 public class UnsupportedMessageReceiver extends AbstractMessageReceiver {
@@ -20,6 +21,8 @@ public class UnsupportedMessageReceiver extends AbstractMessageReceiver {
             getEnvelopeSender().sendNotification(
                     MessageHelper.toFailedNotification(message, reason));
         } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

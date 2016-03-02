@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.concurrent.Future;
 
 public class LimeSessionProviderImpl implements  LimeSessionProvider {
-    public void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication) throws Exception {
+    public void establishSession(ClientChannel clientChannel, URI endPoint, Identity identity, Authentication authentication, PersistentLimeSessionImpl.PersistentLimeSessionListener listener) throws Exception {
 
         clientChannel.getTransport().open(endPoint);
 
@@ -39,7 +39,13 @@ public class LimeSessionProviderImpl implements  LimeSessionProvider {
 
                     @Override
                     public void onReceiveSession(Session session) {
-
+                        if (session.getState().equals(Session.SessionState.ESTABLISHED) && listener != null) {
+                            try {
+                                listener.sessionEstablished(true);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 });
     }

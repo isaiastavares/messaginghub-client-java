@@ -7,6 +7,7 @@ import org.limeprotocol.Node;
 import org.limeprotocol.messaging.contents.PlainText;
 
 import javax.naming.OperationNotSupportedException;
+import java.io.IOException;
 
 /***
  * Extension methods for <see cref="IEnvelopeSender"/>
@@ -35,6 +36,8 @@ public class EnvelopeSenderHelper
         try {
             sender.sendMessage(message);
         } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
