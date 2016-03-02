@@ -22,7 +22,6 @@ public class MessagingHubClientBuilder {
     private String login;
     private String password;
     private String accessKey;
-    private long sendTimeout;
     private String domain;
     private String hostName;
 
@@ -38,7 +37,6 @@ public class MessagingHubClientBuilder {
     public MessagingHubClientBuilder() throws URISyntaxException {
         hostName = DEFAULT_DOMAIN;
         domain = DEFAULT_DOMAIN;
-        sendTimeout = 20;
         senderBuilder = new MessagingHubSenderBuilder(this);
 
         identity = Identity.parse(login + "@" + domain);
@@ -76,11 +74,6 @@ public class MessagingHubClientBuilder {
         if (domain == null || domain.isEmpty()) throw new IllegalArgumentException("domain");
 
         this.domain = domain;
-        return this;
-    }
-
-    public MessagingHubClientBuilder withSendTimeout(long timeout) {
-        sendTimeout = timeout;
         return this;
     }
 

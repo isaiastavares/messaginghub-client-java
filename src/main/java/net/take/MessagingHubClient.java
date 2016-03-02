@@ -104,7 +104,7 @@ public class MessagingHubClient implements MessagingHubClientInterface, Persiste
     }
 
     @Override
-    public synchronized void stop() {
+    public synchronized void stop() throws IOException {
         if (isStarted()) throw new IllegalStateException("The client is not started");
 
         //_channelListener.Stop();

@@ -4,6 +4,7 @@ import org.limeprotocol.*;
 import org.limeprotocol.client.ClientChannel;
 import org.limeprotocol.security.Authentication;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -39,7 +40,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
         return watchSessionRunnable != null && !watchSessionRunnable.isStopping();
     }
 
-    public synchronized void start() throws IllegalStateException {
+    public synchronized void start() throws Exception {
         establishSession();
 
         if (!isSessionEstablished()) {
@@ -51,7 +52,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
         watchSessionThread.start();
     }
 
-    public synchronized void stop() {
+    public synchronized void stop() throws IOException {
 
         if (isWatchingSession()) {
             watchSessionRunnable.stop();
@@ -66,8 +67,7 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
     }
 
-    private void endSession()
-    {
+    private void endSession() throws IOException {
         limeSessionProvider.finishSession(clientChannel);
         clientChannel = null;
     }
@@ -112,10 +112,10 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     }
 
     private boolean isSessionEstablished() {
-        return limeSessionProvider.IsSessionEstablished(clientChannel);
+        return limeSessionProvider.isSessionEstablished(clientChannel);
     }
 
-    private synchronized void establishSession() {
+    private synchronized void establishSession() throws Exception {
         clientChannel = null;
 
         clientChannel = clientChannelFactory.createClientChannel();
