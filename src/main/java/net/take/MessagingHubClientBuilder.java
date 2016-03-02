@@ -11,6 +11,7 @@ import org.limeprotocol.security.PlainAuthentication;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.function.Supplier;
 
 public class MessagingHubClientBuilder {
 
@@ -88,20 +89,20 @@ public class MessagingHubClientBuilder {
         return senderBuilder;
     }
 
-    //public MessagingHubSenderBuilder addMessageReceiver(Func<IMessageReceiver> receiverFactory, MediaType forMimeType=null) {
-    //    senderBuilder.AddMessageReceiver(receiverFactory, forMimeType);
-    //    return senderBuilder;
-    //}
+    public MessagingHubSenderBuilder addMessageReceiver(Supplier<MessageReceiver> receiverFactory, MediaType forMimeType) {
+        senderBuilder.addMessageReceiver(receiverFactory, forMimeType);
+        return senderBuilder;
+    }
 
     public MessagingHubSenderBuilder addNotificationReceiver(NotificationReceiver notificationReceiver, Notification.Event forEventType) {
         senderBuilder.addNotificationReceiver(notificationReceiver, forEventType);
         return senderBuilder;
     }
 
-    //public MessagingHubSenderBuilder addNotificationReceiver(Func<INotificationReceiver> receiverFactory, Event?forEventType=null) {
-    //    senderBuilder.AddNotificationReceiver(receiverFactory, forEventType);
-    //    return senderBuilder;
-    //}
+    public MessagingHubSenderBuilder addNotificationReceiver(Supplier<NotificationReceiver> receiverFactory, Notification.Event forEventType) {
+        senderBuilder.addNotificationReceiver(receiverFactory, forEventType);
+        return senderBuilder;
+    }
 
     public MessagingHubClientInterface build() {
         messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, senderBuilder.getEnvelopeRegistrar());
