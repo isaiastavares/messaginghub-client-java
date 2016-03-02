@@ -13,7 +13,6 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
     private final URI endPoint;
     private final Identity identity;
     private final Authentication authentication;
-    private final long sendTimeout;
     private final ClientChannelFactory clientChannelFactory;
     private final LimeSessionProvider limeSessionProvider;
     private final PersistentLimeSessionListener listener;
@@ -24,13 +23,12 @@ public class PersistentLimeSessionImpl implements PersistentLimeSession {
 
     private long reconnectDelay = 2000;
 
-    protected PersistentLimeSessionImpl(URI endPoint, Identity identity, Authentication authentication, long sendTimeout,
+    protected PersistentLimeSessionImpl(URI endPoint, Identity identity, Authentication authentication,
                                         ClientChannelFactory clientChannelFactory, LimeSessionProvider limeSessionProvider,
                                         PersistentLimeSessionListener listener) {
         this.endPoint = endPoint;
         this.identity = identity;
         this.authentication = authentication;
-        this.sendTimeout = sendTimeout;
         this.clientChannelFactory = clientChannelFactory;
         this.limeSessionProvider = limeSessionProvider;
         this.listener = listener;

@@ -6,6 +6,8 @@ import org.limeprotocol.Message;
 import org.limeprotocol.Node;
 import org.limeprotocol.messaging.contents.PlainText;
 
+import javax.naming.OperationNotSupportedException;
+
 /***
  * Extension methods for <see cref="IEnvelopeSender"/>
  */
@@ -30,7 +32,11 @@ public class EnvelopeSenderHelper
         message.setTo(to);
         message.setContent(content);
 
-        sender.sendMessage(message);
+        try {
+            sender.sendMessage(message);
+        } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static PlainText CreatePlainTextContent(String content) {return new PlainText(content) ;}

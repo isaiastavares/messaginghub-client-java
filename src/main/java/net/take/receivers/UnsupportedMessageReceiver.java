@@ -5,6 +5,7 @@ import org.limeprotocol.Message;
 import org.limeprotocol.Reason;
 import org.limeprotocol.ReasonCodes;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.concurrent.Future;
 
 public class UnsupportedMessageReceiver extends AbstractMessageReceiver {
@@ -15,8 +16,12 @@ public class UnsupportedMessageReceiver extends AbstractMessageReceiver {
                 ReasonCodes.MESSAGE_UNSUPPORTED_CONTENT_TYPE,
                 message.getType().toString() + " messages are not supported");
 
-        getEnvelopeSender().sendNotification(
-                MessageHelper.toFailedNotification(message, reason));
+        try {
+            getEnvelopeSender().sendNotification(
+                    MessageHelper.toFailedNotification(message, reason));
+        } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
 

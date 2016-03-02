@@ -105,7 +105,7 @@ public class MessagingHubClientBuilder {
     }
 
     public MessagingHubClientInterface build() {
-        messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, sendTimeout, senderBuilder.getEnvelopeRegistrar());
+        messagingHubClientInterface = new MessagingHubClient(identity, GetAuthenticationScheme(), endPoint, senderBuilder.getEnvelopeRegistrar());
         return messagingHubClientInterface;
     }
 
